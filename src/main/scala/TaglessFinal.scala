@@ -176,12 +176,27 @@ object TaglessFinal {
       override def sum(left: SimpleExpr[Int], right: SimpleExpr[Int]): SimpleExpr[Int] = SimpleExpr(left.value + right.value)
     }
 
-    def program1[E[_]](implicit alg:Algebra[E]): E[Boolean]
+    def program1[E[_]](implicit alg:Algebra[E]): E[Boolean] = {
+      import alg._
+      or(b(true), and(b(true), b(false)))
+    }
+
+    def program2[E[_]](implicit alg: Algebra[E]): E[Int] = {
+      import alg._
+      sum(i(24), i(-3))
+    }
 
   }
 
+  def demoHigherKindedTaglessFinal():Unit = {
+    import TaglessFinalHighKindedTypes._
+    println(program1[SimpleExpr])
+    println(program2[SimpleExpr])
+  }
+
   def main(args: Array[String]): Unit = {
-    demoTagless()
-    demoFinalTagless()
+//    demoTagless()
+//    demoFinalTagless()
+    demoHigherKindedTaglessFinal()
   }
 }
